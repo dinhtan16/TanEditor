@@ -4,8 +4,6 @@ Word-like React editor on TipTap 3: A4 pages, tables (merge, borders, cell color
 images (resize, text wrap), fonts and colors, and dotted tabs (`........` that fill
 the line, with text typed on the dots). Private package on GitHub Packages.
 
-Based on [Text-editor-react](https://github.com/HuyPhan1232203/Text-editor-react) (MIT, see `LICENSE.upstream`).
-
 ## Install
 
 The package is private: you need a GitHub personal access token (classic) with
