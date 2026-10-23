@@ -4,6 +4,8 @@ Word-like React editor on TipTap 3: A4 pages, tables (merge, borders, cell color
 images (resize, text wrap), fonts and colors, and dotted tabs (`........` that fill
 the line, with text typed on the dots). Private package on GitHub Packages.
 
+**[Live demo →](https://dinhtan16.github.io/TanEditor/)**
+
 ![TanEditor demo](docs/screenshot.png)
 
 ## Install

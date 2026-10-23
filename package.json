@@ -27,11 +27,9 @@
         },
         "./style.css": "./dist/style.css"
     },
-    "sideEffects": [
-        "*.css"
-    ],
     "scripts": {
         "dev": "vite --config vite.demo.config.ts",
+        "build:demo": "vite build --config vite.demo.config.ts",
         "build": "vite build",
         "typecheck": "tsc --noEmit",
         "prepublishOnly": "pnpm typecheck && pnpm build"
