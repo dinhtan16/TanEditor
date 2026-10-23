@@ -1,0 +1,88 @@
+{
+    "name": "@dinhtan16/tan-editor",
+    "version": "0.1.0",
+    "description": "Word-like React editor on TipTap 3: A4 pages, tables, images, dotted tabs.",
+    "type": "module",
+    "license": "SEE LICENSE IN LICENSE",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dinhtan16/TanEditor.git"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "files": [
+        "dist",
+        "LICENSE",
+        "LICENSE.upstream",
+        "README.md"
+    ],
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./style.css": "./dist/style.css"
+    },
+    "sideEffects": [
+        "*.css"
+    ],
+    "scripts": {
+        "dev": "vite --config vite.demo.config.ts",
+        "build": "vite build",
+        "typecheck": "tsc --noEmit",
+        "prepublishOnly": "pnpm typecheck && pnpm build"
+    },
+    "peerDependencies": {
+        "@tiptap/core": "^3.29.0",
+        "@tiptap/extension-file-handler": "^3.29.0",
+        "@tiptap/extension-highlight": "^3.29.0",
+        "@tiptap/extension-image": "^3.28.0",
+        "@tiptap/extension-table": "^3.29.0",
+        "@tiptap/extension-text-align": "^3.29.0",
+        "@tiptap/extension-text-style": "^3.29.0",
+        "@tiptap/pm": "^3.29.0",
+        "@tiptap/react": "^3.29.0",
+        "@tiptap/starter-kit": "^3.29.0",
+        "lucide-react": ">=0.400.0",
+        "radix-ui": "^1.4.0",
+        "react": "^18.2.0 || ^19.0.0",
+        "react-dom": "^18.2.0 || ^19.0.0"
+    },
+    "dependencies": {
+        "@floating-ui/react": "^0.27.20",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "react-hotkeys-hook": "^5.3.3",
+        "tailwind-merge": "^3.5.0"
+    },
+    "devDependencies": {
+        "@tiptap/core": "3.32.0",
+        "@tiptap/extension-file-handler": "3.32.0",
+        "@tiptap/extension-highlight": "3.32.0",
+        "@tiptap/extension-image": "3.32.0",
+        "@tiptap/extension-table": "3.32.0",
+        "@tiptap/extension-text-align": "3.32.0",
+        "@tiptap/extension-text-style": "3.32.0",
+        "@tiptap/pm": "3.32.0",
+        "@tiptap/react": "3.32.0",
+        "@tiptap/starter-kit": "3.32.0",
+        "@types/react": "^19.2.0",
+        "@types/react-dom": "^19.2.0",
+        "@vitejs/plugin-react": "^5.1.1",
+        "autoprefixer": "^10.5.0",
+        "lucide-react": "^1.8.0",
+        "postcss": "^8.5.9",
+        "radix-ui": "^1.4.3",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "sass": "^1.99.0",
+        "tailwindcss": "^3.4.15",
+        "typescript": "~5.9.3",
+        "vite": "^7.2.0",
+        "vite-plugin-dts": "^4.5.4"
+    }
+}

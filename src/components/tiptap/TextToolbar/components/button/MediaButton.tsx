@@ -1,0 +1,45 @@
+import { Image, Table } from 'lucide-react';
+import type { ToolbarSectionProps } from '../../types';
+import { Button } from '../../../../ui/button';
+import type { CreateTablePayload } from '../../../tableTiptap/CreateTablePopover';
+import CreateTablePopover from '../../../tableTiptap/CreateTablePopover';
+import { memo, useCallback } from 'react';
+import { t } from '../../../../../i18n';
+
+export const MediaButtons = memo(function MediaButtons({
+    editor,
+}: ToolbarSectionProps) {
+    const handleImageClick = useCallback(() => {
+        editor.chain().focus().setImageUploadNode().run();
+    }, [editor]);
+
+    const handleCreateTable = useCallback(
+        (payload: CreateTablePayload) => {
+            editor.chain().focus().insertTable(payload).run();
+        },
+        [editor]
+    );
+
+    return (
+        <>
+            <Button
+                onClick={handleImageClick}
+                variant="ghost"
+                title={t('toolbar.image')}
+                aria-label={t('toolbar.image')}
+            >
+                <Image className="w-4 h-4" />
+            </Button>
+
+            <CreateTablePopover createTable={handleCreateTable}>
+                <Button
+                    variant="ghost"
+                    title={t('toolbar.table')}
+                    aria-label={t('toolbar.table')}
+                >
+                    <Table className="w-4 h-4" />
+                </Button>
+            </CreateTablePopover>
+        </>
+    );
+});

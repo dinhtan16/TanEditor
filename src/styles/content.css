@@ -1,0 +1,77 @@
+/*
+ * Default look of the edited content. Wrapped in :where() so it has no
+ * specificity: a stylesheet passed through `contentCss` / `contentClassName`
+ * (e.g. the one the document is printed with) always wins.
+ */
+
+:where(.word-editor .tiptap) {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #000;
+}
+
+:where(.word-editor .tiptap) p {
+    margin: 0 0 4px;
+    white-space: pre-wrap;
+}
+
+:where(.word-editor .tiptap) p:empty::before {
+    content: '\00a0';
+}
+
+:where(.word-editor .tiptap) h1 {
+    font-size: 20pt;
+    font-weight: bold;
+}
+
+:where(.word-editor .tiptap) h2 {
+    font-size: 16pt;
+    font-weight: bold;
+}
+
+:where(.word-editor .tiptap) h3 {
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+:where(.word-editor .tiptap) table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 6px 0;
+}
+
+:where(.word-editor .tiptap) td,
+:where(.word-editor .tiptap) th {
+    border: 1px solid #000;
+    padding: 4px 8px;
+    vertical-align: top;
+}
+
+:where(.word-editor .tiptap) table[data-borderless] td,
+:where(.word-editor .tiptap) table[data-borderless] th {
+    border: none;
+}
+
+:where(.word-editor .tiptap) img {
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+/* Dotted tab: the line becomes a flex row and each leader takes an equal
+   share of the free width; typed text sits on its dotted bottom border. Add
+   the same two rules to the stylesheet you print the HTML with. */
+:where(.word-editor .tiptap) :is(p, h1, h2, h3, h4, h5, h6):has(> [data-tab-leader]) {
+    display: flex;
+    align-items: baseline;
+}
+
+:where(.word-editor .tiptap) [data-tab-leader] {
+    flex: 1 1 0;
+    min-width: 24px;
+    margin: 0 4px;
+    padding: 0 2px;
+    border-bottom: 2px dotted currentColor;
+    overflow-wrap: anywhere;
+}

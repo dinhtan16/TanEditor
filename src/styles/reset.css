@@ -1,0 +1,32 @@
+/*
+ * The part of Tailwind's preflight the editor's utilities rely on, limited to
+ * the editor and its popovers (rendered in a Radix portal) so the host app's
+ * own styles are untouched. :where() keeps it at zero specificity, below any
+ * utility class.
+ */
+:where(.word-editor, [data-radix-popper-content-wrapper]),
+:where(.word-editor, [data-radix-popper-content-wrapper]) *,
+:where(.word-editor, [data-radix-popper-content-wrapper]) ::before,
+:where(.word-editor, [data-radix-popper-content-wrapper]) ::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: var(--border, #e5e7eb);
+}
+
+:where(.word-editor, [data-radix-popper-content-wrapper]) :is(button, input, select, textarea) {
+    font: inherit;
+    color: inherit;
+    margin: 0;
+}
+
+:where(.word-editor, [data-radix-popper-content-wrapper]) button {
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+:where(.word-editor, [data-radix-popper-content-wrapper]) :is(svg, img) {
+    display: inline-block;
+    vertical-align: middle;
+}

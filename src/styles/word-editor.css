@@ -1,0 +1,232 @@
+/*
+ * Editor chrome for the word editor, scoped to .word-editor so it never
+ * touches the app's other TipTap editors. Text, table and spacing styles come
+ * from PAYMENT_TEMPLATE_PRINT_CSS (the .nfc-tpl class on the editor), so the
+ * page looks like the printout. Adapted from upstream Text-editor-react index.css.
+ */
+
+.word-editor .document-page {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.word-editor .tiptap {
+    outline: none;
+}
+
+/* Give an empty dotted tab a line box, so the caret shows when it is inside */
+.word-editor .tiptap [data-tab-leader]:empty::before {
+    content: '\200b';
+}
+
+/* Lists (Tailwind's preflight removes the markers) */
+.word-editor .tiptap ul,
+.word-editor .tiptap ol {
+    padding-left: 24px;
+    margin: 4px 0;
+}
+.word-editor .tiptap ul {
+    list-style-type: disc;
+}
+.word-editor .tiptap ol {
+    list-style-type: decimal;
+}
+.word-editor .tiptap ul ul {
+    list-style-type: circle;
+}
+.word-editor .tiptap ol ol {
+    list-style-type: lower-alpha;
+}
+.word-editor .tiptap li > p {
+    margin: 0;
+}
+
+.word-editor .tiptap blockquote {
+    border-left: 3px solid #808080;
+    padding-left: 12px;
+    margin: 8px 0;
+    color: #404040;
+    font-style: italic;
+}
+
+.word-editor .tiptap code {
+    background-color: #f2f2f2;
+    padding: 1px 4px;
+    border-radius: 2px;
+    font-family: 'Courier New', monospace;
+}
+
+.word-editor .tiptap a {
+    color: #0563c1;
+    text-decoration: underline;
+}
+
+/* Tables: editing aids only (borders/padding come from the print CSS) */
+.word-editor .tiptap .tableWrapper {
+    position: relative;
+}
+/* The print CSS floats a compact table and clears the others on the <table>
+   itself. In the editor each table sits in a .tableWrapper, so the next
+   table's wrapper would cover the floated table and steal its clicks: move the
+   float/clear onto the wrapper instead. */
+.word-editor .tiptap .tableWrapper:has(> table[data-compact]) {
+    float: right;
+    clear: right;
+    margin: 6px 0 6px 12px;
+}
+.word-editor .tiptap .tableWrapper:has(> table:not([data-compact])) {
+    clear: both;
+}
+.word-editor .tiptap table[data-compact] {
+    float: none;
+    margin: 0;
+}
+/* Borderless layout tables show a faint guide on hover, via outline so it
+   never affects layout or the printed output. */
+.word-editor .tiptap table[data-borderless]:hover td,
+.word-editor .tiptap table[data-borderless]:hover th {
+    outline: 1px dashed #d7dee8;
+}
+.word-editor .tiptap .selectedCell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(38, 113, 216, 0.12);
+    pointer-events: none;
+}
+.word-editor .tiptap td,
+.word-editor .tiptap th {
+    position: relative;
+}
+.word-editor .tiptap .column-resize-handle {
+    position: absolute;
+    right: -2px;
+    top: 0;
+    bottom: -2px;
+    width: 4px;
+    background-color: #2671d8;
+    pointer-events: none;
+    z-index: 20;
+}
+.word-editor .tiptap.resize-cursor {
+    cursor: col-resize;
+}
+
+/* Border toggle: an icon button in the left page margin, outside the table,
+   so it never covers a cell. The padding bridges the gap to the table so the
+   hover is not lost on the way to the button. */
+.word-editor .tiptap .tableWrapper .table-controls {
+    position: absolute;
+    top: 0;
+    left: -40px;
+    z-index: 30;
+    padding-right: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease;
+}
+.word-editor .tiptap .tableWrapper:hover .table-controls,
+.word-editor .tiptap .tableWrapper:focus-within .table-controls {
+    opacity: 1;
+    pointer-events: auto;
+}
+.word-editor .tiptap .tableWrapper .table-border-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #fff;
+    color: #4b5563;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+}
+.word-editor .tiptap .tableWrapper .table-border-toggle:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+.word-editor .tiptap .tableWrapper .table-border-toggle .icon-off,
+.word-editor .tiptap .tableWrapper .table-border-toggle.is-hidden .icon-on {
+    display: none;
+}
+.word-editor .tiptap .tableWrapper .table-border-toggle.is-hidden .icon-off {
+    display: flex;
+}
+
+/* Images with text wrapping float; keep the editor tall enough to contain them */
+.word-editor .tiptap::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+/* Image resize handles: TipTap's resizable node view ships no styles. Small
+   squares on the corners, shown on hover or when selected. */
+.word-editor .tiptap [data-resize-container][data-node='image'] {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+}
+.word-editor
+    .tiptap
+    [data-resize-container][data-node='image']
+    [data-resize-handle] {
+    width: 10px;
+    height: 10px;
+    margin: -5px;
+    z-index: 2;
+    background: #fff;
+    border: 1.5px solid #1a73e8;
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 120ms ease;
+}
+.word-editor
+    .tiptap
+    [data-resize-container][data-node='image']:hover
+    [data-resize-handle],
+.word-editor
+    .tiptap
+    [data-resize-container][data-node='image'].ProseMirror-selectednode
+    [data-resize-handle],
+.word-editor
+    .tiptap
+    [data-resize-container][data-node='image'][data-resize-state='true']
+    [data-resize-handle] {
+    opacity: 1;
+}
+.word-editor
+    .tiptap
+    [data-resize-container][data-node='image'].ProseMirror-selectednode
+    img {
+    outline: 2px solid #1a73e8;
+}
+.word-editor .tiptap [data-resize-handle='top-left'],
+.word-editor .tiptap [data-resize-handle='bottom-right'] {
+    cursor: nwse-resize;
+}
+.word-editor .tiptap [data-resize-handle='top-right'],
+.word-editor .tiptap [data-resize-handle='bottom-left'] {
+    cursor: nesw-resize;
+}
+
+/* Gapcursor (cursor between nodes) */
+.word-editor .tiptap .ProseMirror-gapcursor {
+    pointer-events: none;
+    position: absolute;
+}
+.word-editor .tiptap .ProseMirror-gapcursor::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -2px;
+    width: 20px;
+    border-top: 1px solid #3b82f6;
+    animation: word-editor-cursor-blink 1.1s steps(2, start) infinite;
+}
+@keyframes word-editor-cursor-blink {
+    to {
+        visibility: hidden;
+    }
+}

@@ -1,0 +1,3 @@
+/* Only the utilities the editor's components use (see tailwind.config.js).
+   No preflight: the editor must not reset the host app's styles. */
+@tailwind utilities;

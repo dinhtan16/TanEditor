@@ -1,0 +1,160 @@
+import { BubbleMenu } from '@tiptap/react/menus';
+import {
+    Bold,
+    Italic,
+    AlignLeft,
+    AlignCenter,
+    AlignRight,
+    Underline,
+    LinkIcon,
+} from 'lucide-react';
+import type { Editor } from '@tiptap/react';
+import { ToolbarButton } from '../../../ToolbarButton';
+import { ColorHighlightButton } from '../../tiptap-ui/color-highlight-button';
+import { HIGHLIGHT_COLORS } from '../../TextToolbar/constants';
+import { useBubbleMenuState } from '../hooks/useBubbleMenuState';
+import { CellSelection } from '@tiptap/pm/tables';
+import { NodeSelection } from '@tiptap/pm/state';
+import { t } from '../../../../i18n';
+
+interface TextBubbleToolbarProps {
+    editor: Editor;
+}
+
+function TextBubbleToolbar({ editor }: TextBubbleToolbarProps) {
+    // Sử dụng hook để track state
+    const state = useBubbleMenuState(editor);
+
+    if (!editor) return null;
+    const handleLinkClick = () => {
+        const previousUrl = editor.getAttributes('link').href;
+        const url = window.prompt('URL:', previousUrl);
+
+        if (url === null) return;
+
+        if (url === '') {
+            editor.chain().focus().extendMarkRange('link').unsetLink().run();
+            return;
+        }
+
+        editor
+            .chain()
+            .focus()
+            .extendMarkRange('link')
+            .setLink({ href: url })
+            .run();
+    };
+
+    return (
+        <BubbleMenu
+            editor={editor}
+            updateDelay={100}
+            shouldShow={({ state, from, to }) => {
+                const { selection } = state;
+
+                // Có text được select
+                const hasSelection = from !== to;
+
+                // Check CHÍNH XÁC xem có phải CellSelection không
+                const isCellSelection = selection instanceof CellSelection;
+
+                // CHỈ show khi có selection VÀ KHÔNG phải cell selection
+                // Selected nodes such as images have their own menu
+                return (
+                    hasSelection &&
+                    !isCellSelection &&
+                    !(selection instanceof NodeSelection)
+                );
+            }}
+        >
+            <div
+                className="flex items-center gap-1 rounded-lg bg-white text-gray-800 px-3 py-2 shadow-xl border border-gray-200"
+                onMouseDown={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }}
+            >
+                {/* Formatting Buttons - sử dụng state từ hook */}
+                <ToolbarButton
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    isActive={state.isBold}
+                    icon={Bold}
+                    label="Bold"
+                    tooltip={t('toolbar.bold')}
+                />
+                <ToolbarButton
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    isActive={state.isItalic}
+                    icon={Italic}
+                    label="Italic"
+                    tooltip={t('toolbar.italic')}
+                />
+                <ToolbarButton
+                    onClick={() =>
+                        editor.chain().focus().toggleUnderline().run()
+                    }
+                    isActive={state.isUnderline}
+                    icon={Underline}
+                    label="Underline"
+                    tooltip={t('toolbar.underline')}
+                />
+                <div className="w-px h-6 bg-gray-300 mx-1" />
+                <ToolbarButton
+                    onClick={handleLinkClick}
+                    isActive={state.isLink}
+                    icon={LinkIcon}
+                    label="Link"
+                    tooltip={t('toolbar.link')}
+                />
+                {/* Divider */}
+                <div className="w-px h-6 bg-gray-300 mx-1" />
+
+                {/* Highlight Colors */}
+                {HIGHLIGHT_COLORS.map(({ color, tooltip }) => (
+                    <ColorHighlightButton
+                        key={color}
+                        editor={editor}
+                        tooltip={tooltip}
+                        highlightColor={color}
+                        hideWhenUnavailable={false}
+                        showShortcut={false}
+                    />
+                ))}
+
+                {/* Divider */}
+                <div className="w-px h-6 bg-gray-300 mx-1" />
+
+                {/* Text Alignment - sử dụng state từ hook */}
+                <ToolbarButton
+                    onClick={() =>
+                        editor.chain().focus().setTextAlign('left').run()
+                    }
+                    isActive={state.textAlign === 'left'}
+                    icon={AlignLeft}
+                    label="Align Left"
+                    tooltip={t('toolbar.alignLeft')}
+                />
+                <ToolbarButton
+                    onClick={() =>
+                        editor.chain().focus().setTextAlign('center').run()
+                    }
+                    isActive={state.textAlign === 'center'}
+                    icon={AlignCenter}
+                    label="Align Center"
+                    tooltip={t('toolbar.alignCenter')}
+                />
+                <ToolbarButton
+                    onClick={() =>
+                        editor.chain().focus().setTextAlign('right').run()
+                    }
+                    isActive={state.textAlign === 'right'}
+                    icon={AlignRight}
+                    label="Align Right"
+                    tooltip={t('toolbar.alignRight')}
+                />
+            </div>
+        </BubbleMenu>
+    );
+}
+
+export default TextBubbleToolbar;

@@ -1,0 +1,5 @@
+@import './reset.css';
+@import './tailwind.css';
+@import '../pagination/styles.css';
+@import './content.css';
+@import './word-editor.css';
